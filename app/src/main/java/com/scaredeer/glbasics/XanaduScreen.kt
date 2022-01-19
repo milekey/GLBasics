@@ -1,7 +1,7 @@
 package com.scaredeer.glbasics
 
 import android.content.Context
-import android.opengl.GLES20
+import android.opengl.GLES20.*
 import android.opengl.Matrix
 import android.util.Log
 import com.scaredeer.glbasics.Xanadu.Companion.SCALE_FACTOR
@@ -78,11 +78,11 @@ class XanaduScreen(context: Context) : Screen(context) {
         }
 
         // 消去（背景）色の指定
-        GLES20.glClearColor(1f, 1f, 1f, 1f)
+        glClearColor(1f, 1f, 1f, 1f)
 
         // アルファブレンドを有効にする設定
-        GLES20.glEnable(GLES20.GL_BLEND)
-        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     }
 
     override fun resize(width: Int, height: Int) {
@@ -133,7 +133,7 @@ class XanaduScreen(context: Context) : Screen(context) {
     }
 
     override fun present() {
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
+        glClear(GL_COLOR_BUFFER_BIT)
 
         // 描画対象テクスチャーをバインドする
         texture.bind()
@@ -153,7 +153,7 @@ class XanaduScreen(context: Context) : Screen(context) {
             // 作成したモデル行列をシェーダー変数（u_ModelMatrix）に適用する
             shader.setModelMatrix(modelMatrix)
 
-            vertices.draw(GLES20.GL_TRIANGLE_STRIP, 0, VERTICES_COUNT)
+            vertices.draw(GL_TRIANGLE_STRIP, 0, VERTICES_COUNT)
         }
 
         // 描画対象テクスチャーをバインド解除する

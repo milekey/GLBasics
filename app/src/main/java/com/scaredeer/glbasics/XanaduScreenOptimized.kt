@@ -1,13 +1,16 @@
 package com.scaredeer.glbasics
 
 import android.content.Context
-import android.opengl.GLES20
+import android.opengl.GLES20.*
 import android.opengl.Matrix
 import android.util.Log
 import com.scaredeer.glbasics.Xanadu.Companion.SCALE_FACTOR
 import com.scaredeer.glbasics.Xanadu.Companion.TEXTURE_HALF_SIZE
 import com.scaredeer.glbasics.framework.Screen
-import com.scaredeer.glbasics.framework.gl.*
+import com.scaredeer.glbasics.framework.gl.BindableVertices
+import com.scaredeer.glbasics.framework.gl.FpsCounter
+import com.scaredeer.glbasics.framework.gl.Shader
+import com.scaredeer.glbasics.framework.gl.Texture
 
 /**
  * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/glbasics/OptimizedBobTest.java
@@ -81,11 +84,11 @@ class XanaduScreenOptimized(context: Context) : Screen(context) {
         }
 
         // 消去（背景）色の指定
-        GLES20.glClearColor(1f, 1f, 1f, 1f)
+        glClearColor(1f, 1f, 1f, 1f)
 
         // アルファブレンドを有効にする設定
-        GLES20.glEnable(GLES20.GL_BLEND)
-        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     }
 
     override fun resize(width: Int, height: Int) {
@@ -136,7 +139,7 @@ class XanaduScreenOptimized(context: Context) : Screen(context) {
     }
 
     override fun present() {
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
+        glClear(GL_COLOR_BUFFER_BIT)
 
         // ループに入る前にバインドし、
         vertices.bind()
@@ -155,7 +158,7 @@ class XanaduScreenOptimized(context: Context) : Screen(context) {
             // 作成したモデル行列をシェーダー変数（u_ModelMatrix）に適用する
             shader.setModelMatrix(modelMatrix)
 
-            vertices.draw(GLES20.GL_TRIANGLE_STRIP, 0, VERTICES_COUNT)
+            vertices.draw(GL_TRIANGLE_STRIP, 0, VERTICES_COUNT)
         }
         // ループを抜けたのでバインド解除。
         vertices.unbind()
