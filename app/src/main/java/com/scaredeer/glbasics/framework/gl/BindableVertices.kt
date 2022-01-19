@@ -11,7 +11,7 @@ import java.nio.FloatBuffer
 class BindableVertices(private val shader: Shader, verticesCount: Int) {
 
     companion object {
-        private val TAG = Vertices::class.simpleName
+        private val TAG = BindableVertices::class.simpleName
 
         private const val BYTES_PER_FLOAT = 4 // Java float is 32-bit = 4-byte
         private const val POSITION_COMPONENT_COUNT = 2 // x, y（※ z は常に 0 なので省略）
