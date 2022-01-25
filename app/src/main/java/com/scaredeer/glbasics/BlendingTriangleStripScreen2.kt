@@ -18,7 +18,7 @@ class BlendingTriangleStripScreen2(context: Context) : Screen(context) {
         private val TAG = BlendingTriangleStripScreen2::class.simpleName
 
         private const val VERTICES_COUNT = 4 // 頂点の個数
-        private const val SQUARE_SIZE = 512f
+        private const val SQUARE_SIZE: Float = 512f
     }
 
     private lateinit var shader1: Shader

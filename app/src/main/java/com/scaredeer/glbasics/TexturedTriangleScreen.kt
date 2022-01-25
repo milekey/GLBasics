@@ -21,8 +21,8 @@ class TexturedTriangleScreen(context: Context) : Screen(context) {
         private val TAG = TexturedTriangleScreen::class.simpleName
 
         private const val BYTES_PER_FLOAT = 4 // Java float is 32-bit = 4-byte
-        private const val POSITION_COMPONENT_COUNT = 2 // x, y（※ z は常に 0 なので省略）
-        private const val TEXTURE_COORDINATES_COMPONENT_COUNT = 2 // s, t
+        private const val POSITION_COMPONENT_COUNT: Int = 2 // x, y（※ z は常に 0 なので省略）
+        private const val TEXTURE_COORDINATES_COMPONENT_COUNT: Int = 2 // s, t
 
         // stride は要するに、次の頂点データセットへスキップするバイト数を表したもの。
         // 一つの頂点データセットは頂点座標 x, y とテクスチャーの s, t の 4 つで構成されているので、
@@ -30,7 +30,7 @@ class TexturedTriangleScreen(context: Context) : Screen(context) {
         private const val VERTEX_SIZE =
             (POSITION_COMPONENT_COUNT + TEXTURE_COORDINATES_COMPONENT_COUNT) * BYTES_PER_FLOAT
 
-        private const val VERTICES_COUNT = 3 // 描画すべき頂点の個数
+        private const val VERTICES_COUNT: Int = 3 // 描画すべき頂点の個数
 
         private const val U_VP_MATRIX = "u_VpMatrix"
         private const val A_POSITION = "a_Position"

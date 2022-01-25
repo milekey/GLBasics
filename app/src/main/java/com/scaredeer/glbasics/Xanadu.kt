@@ -14,8 +14,8 @@ class Xanadu {
         // ちなみに、60fps の場合、1 フレームは 1000000000 / 60 = 16666667 [nano sec]
         private const val SPEED: Float = 6.0E-8F // = 60 / 1000000000: 1 フレーム 1 縦横ピクセル
 
-        const val TEXTURE_HALF_SIZE = 8f
-        const val SCALE_FACTOR = 8f
+        const val TEXTURE_HALF_SIZE: Float = 8f
+        const val SCALE_FACTOR: Float = 8f
 
         private val rand: Random = Random()
     }

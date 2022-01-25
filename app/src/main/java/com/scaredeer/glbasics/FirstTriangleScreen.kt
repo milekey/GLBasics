@@ -17,15 +17,15 @@ class FirstTriangleScreen(context: Context) : Screen(context) {
     companion object {
         private val TAG = FirstTriangleScreen::class.simpleName
 
-        private const val BYTES_PER_FLOAT = 4 // Java float is 32-bit = 4-byte
-        private const val POSITION_COMPONENT_COUNT = 2 // x, y（※ z は常に 0 なので省略）
+        private const val BYTES_PER_FLOAT: Int = 4 // Java float is 32-bit = 4-byte
+        private const val POSITION_COMPONENT_COUNT: Int = 2 // x, y（※ z は常に 0 なので省略）
 
         // stride は要するに、次の頂点データセットへスキップするバイト数を表したもの。
         // 一つの頂点データセットは頂点座標 x, y の 2 つで構成されているので、
         // 次の頂点を処理する際に、2 つ分のバイト数だけポインターを先に進める必要が生じる。
         private const val VERTEX_SIZE = POSITION_COMPONENT_COUNT * BYTES_PER_FLOAT
 
-        private const val VERTICES_COUNT = 3 // 描画すべき頂点の個数
+        private const val VERTICES_COUNT: Int = 3 // 描画すべき頂点の個数
 
         private const val U_VP_MATRIX = "u_VpMatrix"
         private const val A_POSITION = "a_Position"

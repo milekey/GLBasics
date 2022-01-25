@@ -19,8 +19,8 @@ class XanaduScreen(context: Context) : Screen(context) {
     companion object {
         private val TAG = XanaduScreen::class.simpleName
 
-        private const val VERTICES_COUNT = 4 // 頂点の個数
-        private const val XANADU_FIGHTERS = 1000
+        private const val VERTICES_COUNT: Int = 4 // 頂点の個数
+        private const val XANADU_FIGHTERS: Int = 1000
     }
 
     private lateinit var shader: Shader

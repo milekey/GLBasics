@@ -20,8 +20,8 @@ class XanaduScreenOptimized(context: Context) : Screen(context) {
     companion object {
         private val TAG = XanaduScreenOptimized::class.simpleName
 
-        private const val VERTICES_COUNT = 4 // 頂点の個数
-        private const val XANADU_FIGHTERS = 900 // 最適化の結果 34 -> 61fps
+        private const val VERTICES_COUNT: Int = 4 // 頂点の個数
+        private const val XANADU_FIGHTERS: Int = 900 // 最適化の結果 34 -> 61fps
     }
 
     private lateinit var shader: Shader
