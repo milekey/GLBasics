@@ -84,6 +84,8 @@ class Texture(bitmap: Bitmap) {
     }
 
     val name: Int = generateTexture(bitmap)
+    val width: Int = bitmap.width
+    val height: Int = bitmap.height
 
     fun dispose() {
         deleteTexture(name)
