@@ -33,11 +33,11 @@ class TexturedTriangleScreen3(context: Context) : Screen(context) {
     }
 
     private lateinit var shader: Shader
+    private lateinit var texture: Texture
 
     private val projectionMatrix = FloatArray(16)
 
     private val vertices: FloatBuffer
-    private lateinit var texture: Texture
 
     init {
         val byteBuffer = ByteBuffer.allocateDirect(PER_VERTEX_SIZE * VERTICES_COUNT)
