@@ -28,18 +28,18 @@ class ColoredTriangleScreen(context: Context) : Screen(context) {
 
         private const val VERTICES_COUNT: Int = 3 // 描画すべき頂点の個数
 
-        private const val U_PROJECTION_MATRIX = "u_ProjectionMatrix"
+        private const val U_MVP_MATRIX = "u_MvpMatrix"
         private const val A_POSITION = "a_Position"
         private const val A_COLOR = "a_Color"
         private const val V_COLOR = "v_Color"
 
         private const val VERTEX_SHADER = """
-            uniform mat4 $U_PROJECTION_MATRIX;
+            uniform mat4 $U_MVP_MATRIX;
             attribute vec4 $A_POSITION;
             attribute vec4 $A_COLOR;
             varying vec4 $V_COLOR;
             void main() {
-                gl_Position = $U_PROJECTION_MATRIX * $A_POSITION;
+                gl_Position = $U_MVP_MATRIX * $A_POSITION;
                 $V_COLOR = $A_COLOR;
             }
         """
@@ -54,7 +54,7 @@ class ColoredTriangleScreen(context: Context) : Screen(context) {
     }
 
     private var shaderProgram = 0
-    private var uProjectionMatrix = 0
+    private var uMvpMatrix = 0
     private var aPosition = 0
     private var aColor = 0
 
@@ -91,7 +91,7 @@ class ColoredTriangleScreen(context: Context) : Screen(context) {
         glUseProgram(shaderProgram) // シェーダーの選択・有効化
 
         // 各シェーダー変数への入力のポインターとなる id を得る
-        uProjectionMatrix = glGetUniformLocation(shaderProgram, U_PROJECTION_MATRIX)
+        uMvpMatrix = glGetUniformLocation(shaderProgram, U_MVP_MATRIX)
         aPosition = glGetAttribLocation(shaderProgram, A_POSITION)
         aColor = glGetAttribLocation(shaderProgram, A_COLOR)
     }
@@ -107,8 +107,8 @@ class ColoredTriangleScreen(context: Context) : Screen(context) {
             0f, height.toFloat(),
             1f, -1f
         )
-        // 早速、作成した Projection 行列をシェーダー変数（u_ProjectionMatrix）に適用する
-        glUniformMatrix4fv(uProjectionMatrix, 1, false, projectionMatrix, 0)
+        // 早速、作成した Projection 行列をシェーダー変数（u_MvpMatrix）に適用する
+        glUniformMatrix4fv(uMvpMatrix, 1, false, projectionMatrix, 0)
 
         // width/height に基いて、画面下端を底辺とする二等辺三角形の 3 頂点を決定する
         vertices.clear()
