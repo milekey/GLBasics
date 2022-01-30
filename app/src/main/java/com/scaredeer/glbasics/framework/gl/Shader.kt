@@ -8,18 +8,18 @@ class Shader {
     companion object {
         private val TAG = Shader::class.simpleName
 
-        private const val U_PROJECTION_MATRIX = "u_ProjectionMatrix"
+        private const val U_MVP_MATRIX = "u_MvpMatrix"
         private const val A_POSITION = "a_Position"
         private const val A_TEXTURE_COORDINATES = "a_TextureCoordinates"
         private const val V_TEXTURE_COORDINATES = "v_TextureCoordinates"
 
         private const val VERTEX_SHADER = """
-            uniform mat4 $U_PROJECTION_MATRIX;
+            uniform mat4 $U_MVP_MATRIX;
             attribute vec4 $A_POSITION;
             attribute vec2 $A_TEXTURE_COORDINATES;
             varying vec2 $V_TEXTURE_COORDINATES;
             void main() {
-                gl_Position = $U_PROJECTION_MATRIX * $A_POSITION;
+                gl_Position = $U_MVP_MATRIX * $A_POSITION;
                 $V_TEXTURE_COORDINATES = $A_TEXTURE_COORDINATES;
             }
         """
@@ -152,7 +152,7 @@ class Shader {
 
     private val program: Int
 
-    private val uProjectionMatrix: Int
+    private val uMvpMatrix: Int
     val aPosition: Int
     val aTextureCoordinates: Int
     val uTextureUnit: Int
@@ -167,7 +167,7 @@ class Shader {
         validateProgram(program)
 
         // 各シェーダー変数への入力のポインターとなる id を得る
-        uProjectionMatrix = glGetUniformLocation(program, U_PROJECTION_MATRIX)
+        uMvpMatrix = glGetUniformLocation(program, U_MVP_MATRIX)
         aPosition = glGetAttribLocation(program, A_POSITION)
         aTextureCoordinates = glGetAttribLocation(program, A_TEXTURE_COORDINATES)
         uTextureUnit = glGetUniformLocation(program, U_TEXTURE_UNIT)
@@ -182,12 +182,12 @@ class Shader {
     }
 
     /**
-     * バーテックスシェーダーで定義している uProjectionMatrix をセットし直すためのメソッド。
+     * バーテックスシェーダーで定義している uMvpMatrix をセットし直すためのメソッド。
      *
-     * @param projectionMatrix Projection Matrix
+     * @param mvpMatrix Model-View-Projection Matrix
      */
-    fun setProjectionMatrix(projectionMatrix: FloatArray) {
+    fun setProjectionMatrix(mvpMatrix: FloatArray) {
         // Pass the matrix into the shader program.
-        glUniformMatrix4fv(uProjectionMatrix, 1, false, projectionMatrix, 0)
+        glUniformMatrix4fv(uMvpMatrix, 1, false, mvpMatrix, 0)
     }
 }
