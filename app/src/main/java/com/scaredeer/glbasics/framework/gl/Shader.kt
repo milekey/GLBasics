@@ -3,84 +3,35 @@ package com.scaredeer.glbasics.framework.gl
 import android.opengl.GLES20.*
 import android.util.Log
 
-class Shader(val mode: Mode) {
+class Shader {
 
     companion object {
         private val TAG = Shader::class.simpleName
 
-        private const val U_VP_MATRIX = "u_VpMatrix"
-        private const val U_MODEL_MATRIX = "u_ModelMatrix"
+        private const val U_PROJECTION_MATRIX = "u_ProjectionMatrix"
         private const val A_POSITION = "a_Position"
-        private const val A_COLOR = "a_Color"
-        private const val V_COLOR = "v_Color"
         private const val A_TEXTURE_COORDINATES = "a_TextureCoordinates"
         private const val V_TEXTURE_COORDINATES = "v_TextureCoordinates"
-        private const val U_TEXTURE_UNIT = "u_TextureUnit"
 
-        private const val COLORED_VERTEX_SHADER = """
-            uniform mat4 $U_VP_MATRIX;
-            uniform mat4 $U_MODEL_MATRIX;
-            attribute vec4 $A_POSITION;
-            attribute vec4 $A_COLOR;
-            varying vec4 $V_COLOR;
-            attribute vec2 $A_TEXTURE_COORDINATES;
-            varying vec2 $V_TEXTURE_COORDINATES;
-            void main() {
-                gl_Position = $U_VP_MATRIX * $U_MODEL_MATRIX * $A_POSITION;
-                $V_COLOR = $A_COLOR;
-            }
-        """
-        private const val COLORED_FRAGMENT_SHADER = """
-            precision mediump float;
-            varying vec4 $V_COLOR;
-            void main() {
-                gl_FragColor = $V_COLOR;
-            }
-        """
-
-        private const val TEXTURE_VERTEX_SHADER = """
-            uniform mat4 $U_VP_MATRIX;
-            uniform mat4 $U_MODEL_MATRIX;
+        private const val VERTEX_SHADER = """
+            uniform mat4 $U_PROJECTION_MATRIX;
             attribute vec4 $A_POSITION;
             attribute vec2 $A_TEXTURE_COORDINATES;
             varying vec2 $V_TEXTURE_COORDINATES;
             void main() {
-                gl_Position = $U_VP_MATRIX * $U_MODEL_MATRIX * $A_POSITION;
+                gl_Position = $U_PROJECTION_MATRIX * $A_POSITION;
                 $V_TEXTURE_COORDINATES = $A_TEXTURE_COORDINATES;
             }
         """
-        private const val TEXTURE_FRAGMENT_SHADER = """
+
+        private const val U_TEXTURE_UNIT = "u_TextureUnit"
+
+        private const val FRAGMENT_SHADER = """
             precision mediump float;
             uniform sampler2D $U_TEXTURE_UNIT;
             varying vec2 $V_TEXTURE_COORDINATES;
             void main() {
                 gl_FragColor = texture2D($U_TEXTURE_UNIT, $V_TEXTURE_COORDINATES);
-            }
-        """
-
-        private const val COLORED_TEXTURE_VERTEX_SHADER = """
-            uniform mat4 $U_VP_MATRIX;
-            uniform mat4 $U_MODEL_MATRIX;
-            attribute vec4 $A_POSITION;
-            attribute vec4 $A_COLOR;
-            varying vec4 $V_COLOR;
-            attribute vec2 $A_TEXTURE_COORDINATES;
-            varying vec2 $V_TEXTURE_COORDINATES;
-            void main() {
-                gl_Position = $U_VP_MATRIX * $U_MODEL_MATRIX * $A_POSITION;
-                $V_COLOR = $A_COLOR;
-                $V_TEXTURE_COORDINATES = $A_TEXTURE_COORDINATES;
-            }
-        """
-
-        // https://stackoverflow.com/a/5000482/3501958
-        private const val COLORED_TEXTURE_FRAGMENT_SHADER = """
-            precision mediump float;
-            varying vec4 $V_COLOR;
-            uniform sampler2D $U_TEXTURE_UNIT;
-            varying vec2 $V_TEXTURE_COORDINATES;
-            void main() {
-                gl_FragColor = texture2D($U_TEXTURE_UNIT, $V_TEXTURE_COORDINATES) * $V_COLOR;
             }
         """
 
@@ -199,71 +150,44 @@ class Shader(val mode: Mode) {
         }
     }
 
-    enum class Mode {
-        COLORED, TEXTURE, COLORED_TEXTURE
-    }
-
     private val program: Int
 
-    private val uModelMatrix: Int
-    private val uVpMatrix: Int
+    private val uProjectionMatrix: Int
     val aPosition: Int
-    val aColor: Int
     val aTextureCoordinates: Int
-    //val uTextureUnit: Int
+    val uTextureUnit: Int
 
     init {
         // Compile the shaders.
-        val vertexShader = compileShader(GL_VERTEX_SHADER,
-            when (mode) {
-                Mode.COLORED -> COLORED_VERTEX_SHADER
-                Mode.TEXTURE -> TEXTURE_VERTEX_SHADER
-                Mode.COLORED_TEXTURE -> COLORED_TEXTURE_VERTEX_SHADER
-            }
-        )
-        val fragmentShader = compileShader(GL_FRAGMENT_SHADER,
-            when (mode) {
-                Mode.COLORED -> COLORED_FRAGMENT_SHADER
-                Mode.TEXTURE -> TEXTURE_FRAGMENT_SHADER
-                Mode.COLORED_TEXTURE -> COLORED_TEXTURE_FRAGMENT_SHADER
-            }
-        )
+        val vertexShader = compileShader(GL_VERTEX_SHADER, VERTEX_SHADER)
+        val fragmentShader = compileShader(GL_FRAGMENT_SHADER, FRAGMENT_SHADER)
 
         // Link them into a shader program.
         program = linkProgram(vertexShader, fragmentShader)
         validateProgram(program)
 
         // 各シェーダー変数への入力のポインターとなる id を得る
-        uModelMatrix = glGetUniformLocation(program, U_MODEL_MATRIX)
-        uVpMatrix = glGetUniformLocation(program, U_VP_MATRIX)
+        uProjectionMatrix = glGetUniformLocation(program, U_PROJECTION_MATRIX)
         aPosition = glGetAttribLocation(program, A_POSITION)
-        aColor = glGetAttribLocation(program, A_COLOR)
         aTextureCoordinates = glGetAttribLocation(program, A_TEXTURE_COORDINATES)
-        //uTextureUnit = glGetUniformLocation(program, U_TEXTURE_UNIT)
+        uTextureUnit = glGetUniformLocation(program, U_TEXTURE_UNIT)
     }
 
+    /**
+     * シェーダーの選択・有効化
+     */
     fun use() {
         // Set the current OpenGL shader program to this program.
         glUseProgram(program)
     }
 
     /**
-     * バーテックスシェーダーで定義している ModelMatrix をセットし直すためのメソッド。
+     * バーテックスシェーダーで定義している uProjectionMatrix をセットし直すためのメソッド。
      *
-     * @param modelMatrix Model Matrix
+     * @param projectionMatrix Projection Matrix
      */
-    fun setModelMatrix(modelMatrix: FloatArray) {
+    fun setProjectionMatrix(projectionMatrix: FloatArray) {
         // Pass the matrix into the shader program.
-        glUniformMatrix4fv(uModelMatrix, 1, false, modelMatrix, 0)
-    }
-
-    /**
-     * バーテックスシェーダーで定義している VpMatrix をセットし直すためのメソッド。
-     *
-     * @param vpMatrix View-Projection Matrix
-     */
-    fun setVpMatrix(vpMatrix: FloatArray) {
-        // Pass the matrix into the shader program.
-        glUniformMatrix4fv(uVpMatrix, 1, false, vpMatrix, 0)
+        glUniformMatrix4fv(uProjectionMatrix, 1, false, projectionMatrix, 0)
     }
 }
