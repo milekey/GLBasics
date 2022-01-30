@@ -7,7 +7,7 @@ import android.util.Log
 import com.scaredeer.glbasics.Xanadu.Companion.SCALE_FACTOR
 import com.scaredeer.glbasics.Xanadu.Companion.TEXTURE_HALF_SIZE
 import com.scaredeer.glbasics.framework.Screen
-import com.scaredeer.glbasics.framework.gl.Shader
+import com.scaredeer.glbasics.framework.gl.Shader2
 import com.scaredeer.glbasics.framework.gl.Texture
 import com.scaredeer.glbasics.framework.gl.Vertices
 
@@ -19,36 +19,45 @@ class XanaduScreen(context: Context) : Screen(context) {
     companion object {
         private val TAG = XanaduScreen::class.simpleName
 
-        private const val VERTICES_COUNT: Int = 4 // 頂点の個数
+        private const val VERTEX_COUNT: Int = 4 // 頂点の個数
+        private const val INDEX_COUNT: Int = 6 // 頂点インデックスの個数
+
         private const val XANADU_FIGHTERS: Int = 1000
     }
 
-    private lateinit var shader: Shader
+    private lateinit var shader: Shader2
+    private lateinit var texture: Texture
 
-    private val projectionMatrix = FloatArray(16)
-    private val viewMatrix = FloatArray(16)
-    private val vpMatrix = FloatArray(16)
     private val identityMatrix = FloatArray(16)
-    private val rotateScaleMatrix = FloatArray(16)
+    private val scaleRotateMatrix = FloatArray(16)
+    private val translateMatrix = FloatArray(16)
     private val modelMatrix = FloatArray(16)
+    private val projectionMatrix = FloatArray(16)
+    private val mvpMatrix = FloatArray(16)
 
     private lateinit var vertices: Vertices
-    private lateinit var texture: Texture
+
+    private val indices = shortArrayOf(
+        0, 1, 2, // 左上 → 左下 → 右上
+        1, 2, 3  // 左下 → 右上 → 右下
+    )
+
     private var xanadues: ArrayList<Xanadu> = arrayListOf()
 
     init {
         Matrix.setIdentityM(identityMatrix, 0)
         // 行列の積の式として × rotate 的な計算（右側に掛ける）
         Matrix.rotateM(
-            rotateScaleMatrix, 0,
+            scaleRotateMatrix, 0,
             identityMatrix, 0,
             0f, 0f, 0f, 1f
         )
         // 行列の積の式として × scale 的な計算（右側に掛ける）
         Matrix.scaleM(
-            rotateScaleMatrix, 0,
+            scaleRotateMatrix, 0,
             SCALE_FACTOR, SCALE_FACTOR, 1f
         )
+        // これで scaleRotateMatrix は rotate * scale の順番の行列の積を表す行列となる
 
         repeat(XANADU_FIGHTERS) {
             xanadues.add(Xanadu())
@@ -58,23 +67,29 @@ class XanaduScreen(context: Context) : Screen(context) {
     override fun resume() {
         Log.v(TAG, "resume")
 
-        shader = Shader(Shader.Mode.TEXTURE)
+        shader = Shader2(Shader2.Mode.TEXTURE)
         shader.use() // シェーダーの選択・有効化
 
-        vertices = Vertices(shader, VERTICES_COUNT)
+        vertices = Vertices(shader, VERTEX_COUNT, INDEX_COUNT)
         vertices.setVertices(floatArrayOf(
             // x, y, s, t
             -TEXTURE_HALF_SIZE, TEXTURE_HALF_SIZE, 0f, 0f,  // 左上
             -TEXTURE_HALF_SIZE, -TEXTURE_HALF_SIZE, 0f, 1f, // 左下
             TEXTURE_HALF_SIZE, TEXTURE_HALF_SIZE, 1f, 0f,   // 右上
             TEXTURE_HALF_SIZE, -TEXTURE_HALF_SIZE, 1f, 1f   // 右下
-        ), 0, 4 * VERTICES_COUNT)
+        ), 0, 4 * VERTEX_COUNT)
+
+        vertices.setIndices(indices, 0, INDEX_COUNT)
 
         val context = weakContext.get()
         if (context != null) {
             val bitmap = Texture.loadBitmap(context, R.drawable.denzi_xanadu)
             texture = Texture(bitmap!!)
             bitmap.recycle()
+
+            // 描画対象テクスチャーをバインドする
+            // （このプログラムではテクスチャーはこれしか使わないので、初期化時の一度きりの処理で問題ない）
+            texture.bind()
         }
 
         // 消去（背景）色の指定
@@ -88,27 +103,14 @@ class XanaduScreen(context: Context) : Screen(context) {
     override fun resize(width: Int, height: Int) {
         Log.v(TAG, "resize")
 
-        // 以下、Projection 行列と View 行列から VP 行列を決定している。
-        // width/height を利用して、ピクセルパーフェクトになるように視界を設定し、
-        // 画面左下が原点になるようにカメラ位置を右上に平行移動している。
+        // width/height を利用してピクセルパーフェクトになるように、
+        // ワールド座標における視界範囲を設定し、Projection 行列を決定している。
         Matrix.orthoM(
             projectionMatrix, 0,
-            -width / 2f, width / 2f,
-            -height / 2f, height / 2f,
-            1f, 3f
+            0f, width.toFloat(),
+            0f, height.toFloat(),
+            1f, -1f
         )
-        Matrix.setLookAtM(
-            viewMatrix, 0,
-            width / 2f, height / 2f, 2f,
-            width / 2f, height / 2f, -1f,
-            0f, 1f, 0f
-        )
-        Matrix.multiplyMM(
-            vpMatrix, 0,
-            projectionMatrix, 0, viewMatrix, 0
-        )
-        // 作成した VP 行列をシェーダー変数（u_VpMatrix）に適用する
-        shader.setVpMatrix(vpMatrix)
 
         // width/height に基き、画面内のあちこちにキャラクターをランダムに配置する
         xanadues.forEach {
@@ -135,28 +137,28 @@ class XanaduScreen(context: Context) : Screen(context) {
     override fun present() {
         glClear(GL_COLOR_BUFFER_BIT)
 
-        // 描画対象テクスチャーをバインドする
-        texture.bind()
-
         xanadues.forEach {
-            // モデル行列を補正することによって位置の変動を反映する
+            // 行列の積の式として × translate 的な計算（右側に掛ける）
             Matrix.translateM(
-                modelMatrix, 0,
+                translateMatrix, 0,
                 identityMatrix, 0,
                 it.x, it.y, 0f
             )
-            // 行列の積の式として translate * rotate * scale の順番で並ぶようにするのがポイント
+            // これで Model 行列は translate * rotate * scale の順番の行列の積を表す行列となる
             Matrix.multiplyMM(
                 modelMatrix, 0,
-                modelMatrix, 0, rotateScaleMatrix, 0
+                translateMatrix, 0, scaleRotateMatrix, 0
             )
-            // 作成したモデル行列をシェーダー変数（u_ModelMatrix）に適用する
-            shader.setModelMatrix(modelMatrix)
 
-            vertices.draw(GL_TRIANGLE_STRIP, 0, VERTICES_COUNT)
+            // 行列の積の式として Projection (* View) * Model の順番で並ぶようにするのがポイント
+            Matrix.multiplyMM(
+                mvpMatrix, 0,
+                projectionMatrix, 0, modelMatrix, 0
+            )
+            // 作成した MVP 行列をシェーダーに適用する
+            shader.setMvpMatrix(mvpMatrix)
+
+            vertices.draw(GL_TRIANGLES, 0, INDEX_COUNT)
         }
-
-        // 描画対象テクスチャーをバインド解除する
-        texture.unbind()
     }
 }

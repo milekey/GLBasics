@@ -14,22 +14,22 @@ class Xanadu {
         // ちなみに、60fps の場合、1 フレームは 1000000000 / 60 = 16666667 [nano sec]
         private const val SPEED: Float = 6.0E-8F // = 60 / 1000000000: 1 フレーム 1 縦横ピクセル
 
-        const val TEXTURE_HALF_SIZE: Float = 8f
+        const val TEXTURE_HALF_SIZE: Float = 8f // テクスチャーのサイズは 16x16 ピクセル
         const val SCALE_FACTOR: Float = 8f
 
-        private val rand: Random = Random()
+        private val rand = Random()
     }
 
-    var x: Float = 0f
-    var y: Float = 0f
-    private var minX: Float = 0f
-    private var minY: Float = 0f
-    private var maxX: Float = 0f
-    private var maxY: Float = 0f
-    private var velocityX: Float = 0f
-    private var velocityY: Float = 0f
-    private var width: Float = 0f
-    private var height: Float = 0f
+    var x = 0f
+    var y = 0f
+    private var minX = 0f
+    private var minY = 0f
+    private var maxX = 0f
+    private var maxY = 0f
+    private var velocityX = 0f
+    private var velocityY = 0f
+    private var width = 0f
+    private var height = 0f
 
     fun distribute(width: Float, height: Float) {
         this.width = width
