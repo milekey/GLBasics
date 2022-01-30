@@ -100,7 +100,7 @@ class Texture(bitmap: Bitmap) {
         glActiveTexture(GL_TEXTURE0)
         // Tell the texture uniform sampler to use this texture in the shader by
         // telling it to read from texture unit 0.
-        glUniform1i(shaderProgram.uTextureUnit, 0)
+        glUniform1i(shader.uTextureUnit, 0)
          */
 
         // Bind the texture to this unit.
