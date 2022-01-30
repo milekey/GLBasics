@@ -29,10 +29,10 @@ class IndexedScreen(context: Context) : Screen(context) {
         private const val PER_VERTEX_SIZE =
             (POSITION_COMPONENTS + TEXTURE_COORDINATE_COMPONENTS) * BYTES_PER_FLOAT
 
-        private const val VERTICES_COUNT: Int = 4 // 頂点の個数
+        private const val VERTEX_COUNT: Int = 4 // 頂点の個数
 
         private const val BYTES_PER_SHORT = 2 // Java short is 16-bit = 2-byte
-        private const val INDICES_COUNT: Int = 6 // 頂点インデックスの個数
+        private const val INDEX_COUNT: Int = 6 // 頂点インデックスの個数
 
         private const val SQUARE_SIZE_HALF: Float = 256f
     }
@@ -46,11 +46,11 @@ class IndexedScreen(context: Context) : Screen(context) {
     private val indices: ShortBuffer
 
     init {
-        var byteBuffer = ByteBuffer.allocateDirect(PER_VERTEX_SIZE * VERTICES_COUNT)
+        var byteBuffer = ByteBuffer.allocateDirect(PER_VERTEX_SIZE * VERTEX_COUNT)
         byteBuffer.order(ByteOrder.nativeOrder())
         vertices = byteBuffer.asFloatBuffer()
 
-        byteBuffer = ByteBuffer.allocateDirect(BYTES_PER_SHORT * INDICES_COUNT)
+        byteBuffer = ByteBuffer.allocateDirect(BYTES_PER_SHORT * INDEX_COUNT)
         byteBuffer.order(ByteOrder.nativeOrder())
         indices = byteBuffer.asShortBuffer()
         indices.put(shortArrayOf(
@@ -160,6 +160,6 @@ class IndexedScreen(context: Context) : Screen(context) {
         // 頂点のテクスチャー位置情報をシェーダー変数 aTextureCoordinates に対応付ける
         glEnableVertexAttribArray(shader.aTextureCoordinates)
 
-        glDrawElements(GL_TRIANGLE_STRIP, INDICES_COUNT, GL_UNSIGNED_SHORT, indices)
+        glDrawElements(GL_TRIANGLE_STRIP, INDEX_COUNT, GL_UNSIGNED_SHORT, indices)
     }
 }

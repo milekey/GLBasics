@@ -24,7 +24,7 @@ class FirstTriangleScreen(context: Context) : Screen(context) {
         // 次の頂点を処理する際に、2 つ分のバイト数だけポインターを先に進める必要が生じる。
         private const val PER_VERTEX_SIZE = POSITION_COMPONENTS * BYTES_PER_FLOAT
 
-        private const val VERTICES_COUNT: Int = 3 // 描画すべき頂点の個数
+        private const val VERTEX_COUNT: Int = 3 // 描画すべき頂点の個数
 
         private const val U_MVP_MATRIX = "u_MvpMatrix"
         private const val A_POSITION = "a_Position"
@@ -58,7 +58,7 @@ class FirstTriangleScreen(context: Context) : Screen(context) {
     private val vertices: FloatBuffer
 
     init {
-        val byteBuffer = ByteBuffer.allocateDirect(PER_VERTEX_SIZE * VERTICES_COUNT)
+        val byteBuffer = ByteBuffer.allocateDirect(PER_VERTEX_SIZE * VERTEX_COUNT)
         byteBuffer.order(ByteOrder.nativeOrder())
         vertices = byteBuffer.asFloatBuffer()
     }
@@ -148,6 +148,6 @@ class FirstTriangleScreen(context: Context) : Screen(context) {
         glEnableVertexAttribArray(aPosition)
 
         // 各頂点を描画
-        glDrawArrays(GL_TRIANGLES, 0, VERTICES_COUNT)
+        glDrawArrays(GL_TRIANGLES, 0, VERTEX_COUNT)
     }
 }

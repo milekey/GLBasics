@@ -17,8 +17,8 @@ class BlendingScreen(context: Context) : Screen(context) {
     companion object {
         private val TAG = BlendingScreen::class.simpleName
 
-        private const val VERTICES_COUNT: Int = 4 // 頂点の個数
-        private const val INDICES_COUNT: Int = 6 // 頂点インデックスの個数
+        private const val VERTEX_COUNT: Int = 4 // 頂点の個数
+        private const val INDEX_COUNT: Int = 6 // 頂点インデックスの個数
 
         private const val SQUARE_SIZE: Float = 512f
     }
@@ -47,13 +47,13 @@ class BlendingScreen(context: Context) : Screen(context) {
         shader2 = Shader2(Shader2.Mode.TEXTURE)
         shader3 = Shader2(Shader2.Mode.COLORED_TEXTURE)
 
-        vertices1 = Vertices(shader1, VERTICES_COUNT, INDICES_COUNT)
-        vertices2 = Vertices(shader2, VERTICES_COUNT, INDICES_COUNT)
-        vertices3 = Vertices(shader3, VERTICES_COUNT, INDICES_COUNT)
+        vertices1 = Vertices(shader1, VERTEX_COUNT, INDEX_COUNT)
+        vertices2 = Vertices(shader2, VERTEX_COUNT, INDEX_COUNT)
+        vertices3 = Vertices(shader3, VERTEX_COUNT, INDEX_COUNT)
 
-        vertices1.setIndices(indices, 0, INDICES_COUNT)
-        vertices2.setIndices(indices, 0, INDICES_COUNT)
-        vertices3.setIndices(indices, 0, INDICES_COUNT)
+        vertices1.setIndices(indices, 0, INDEX_COUNT)
+        vertices2.setIndices(indices, 0, INDEX_COUNT)
+        vertices3.setIndices(indices, 0, INDEX_COUNT)
 
         val context = weakContext.get()
         if (context != null) {
@@ -101,7 +101,7 @@ class BlendingScreen(context: Context) : Screen(context) {
             width / 2 - SQUARE_SIZE / 2, height / 2 + SQUARE_SIZE / 2, 1f, 0f, 1f, 1f, // 左下
             width / 2 + SQUARE_SIZE / 2, height / 2 - SQUARE_SIZE / 2, 1f, 0f, 1f, 1f, // 右上
             width / 2 + SQUARE_SIZE / 2, height / 2 + SQUARE_SIZE / 2, 1f, 0f, 1f, 1f  // 右下
-        ), 0, 6 * VERTICES_COUNT)
+        ), 0, 6 * VERTEX_COUNT)
 
         // 中央やや右上にズラした位置の Xanadu 戦士
         vertices2.setVertices(floatArrayOf(
@@ -110,7 +110,7 @@ class BlendingScreen(context: Context) : Screen(context) {
             width / 2f, height / 2f, 0f, 1f,                           // 左下
             width / 2 + SQUARE_SIZE, height / 2 + SQUARE_SIZE, 1f, 0f, // 右上
             width / 2 + SQUARE_SIZE, height / 2f, 1f, 1f               // 右下
-        ), 0, 4 * VERTICES_COUNT)
+        ), 0, 4 * VERTEX_COUNT)
 
         // 中央やや左下にズラした位置の Xanadu 戦士
         vertices3.setVertices(floatArrayOf(
@@ -119,7 +119,7 @@ class BlendingScreen(context: Context) : Screen(context) {
             width / 2 - SQUARE_SIZE, height / 2 - SQUARE_SIZE, 0f, 1f, 1f, 1f, 0f, 1f, // 左下
             width / 2f, height / 2f, 1f, 1f, 0f, 1f, 1f, 0f,                           // 右上
             width / 2f, height / 2 - SQUARE_SIZE, 0f, 1f, 1f, 1f, 1f, 1f               // 右下
-        ), 0, 8 * VERTICES_COUNT)
+        ), 0, 8 * VERTEX_COUNT)
     }
 
     override fun pause() {
@@ -139,12 +139,12 @@ class BlendingScreen(context: Context) : Screen(context) {
         glClear(GL_COLOR_BUFFER_BIT)
 
         shader1.use() // 色図形モード
-        vertices1.draw(GL_TRIANGLES, 0, INDICES_COUNT)
+        vertices1.draw(GL_TRIANGLES, 0, INDEX_COUNT)
 
         shader2.use() // テクスチャーモード
-        vertices2.draw(GL_TRIANGLES, 0, INDICES_COUNT)
+        vertices2.draw(GL_TRIANGLES, 0, INDEX_COUNT)
 
         shader3.use() // 彩色テクスチャーモード
-        vertices3.draw(GL_TRIANGLES, 0, INDICES_COUNT)
+        vertices3.draw(GL_TRIANGLES, 0, INDEX_COUNT)
     }
 }

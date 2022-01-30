@@ -29,7 +29,7 @@ class TexturedTriangleScreen3(context: Context) : Screen(context) {
         private const val PER_VERTEX_SIZE =
             (POSITION_COMPONENTS + TEXTURE_COORDINATE_COMPONENTS) * BYTES_PER_FLOAT
 
-        private const val VERTICES_COUNT: Int = 3 // 描画すべき頂点の個数
+        private const val VERTEX_COUNT: Int = 3 // 描画すべき頂点の個数
     }
 
     private lateinit var shader: Shader
@@ -40,7 +40,7 @@ class TexturedTriangleScreen3(context: Context) : Screen(context) {
     private val vertices: FloatBuffer
 
     init {
-        val byteBuffer = ByteBuffer.allocateDirect(PER_VERTEX_SIZE * VERTICES_COUNT)
+        val byteBuffer = ByteBuffer.allocateDirect(PER_VERTEX_SIZE * VERTEX_COUNT)
         byteBuffer.order(ByteOrder.nativeOrder())
         vertices = byteBuffer.asFloatBuffer()
     }
@@ -144,6 +144,6 @@ class TexturedTriangleScreen3(context: Context) : Screen(context) {
         glEnableVertexAttribArray(shader.aTextureCoordinates)
 
         // 各頂点を描画
-        glDrawArrays(GL_TRIANGLES, 0, VERTICES_COUNT)
+        glDrawArrays(GL_TRIANGLES, 0, VERTEX_COUNT)
     }
 }
