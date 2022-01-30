@@ -9,10 +9,10 @@ import java.nio.ShortBuffer
 /**
  * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/framework/gl/BindableVertices.java
  */
-class BindableVertices(private val shader: Shader2, vertexCount: Int, indexCount: Int) {
+class BindableVertices2(private val shader: Shader3, vertexCount: Int, indexCount: Int) {
 
     companion object {
-        private val TAG = BindableVertices::class.simpleName
+        private val TAG = BindableVertices2::class.simpleName
 
         private const val POSITION_COMPONENTS: Int = 2 // x, y（※ z は常に 0 なので省略）
         private const val COLOR_COMPONENTS: Int = 4 // r, g, b, a
@@ -31,15 +31,15 @@ class BindableVertices(private val shader: Shader2, vertexCount: Int, indexCount
 
     init {
         when (shader.mode) {
-            Shader2.Mode.COLORED -> {
+            Shader3.Mode.COLORED -> {
                 hasColor = true
                 hasTextCoordinates = false
             }
-            Shader2.Mode.TEXTURE -> {
+            Shader3.Mode.TEXTURE -> {
                 hasColor = false
                 hasTextCoordinates = true
             }
-            Shader2.Mode.COLORED_TEXTURE -> {
+            Shader3.Mode.COLORED_TEXTURE -> {
                 hasColor = true
                 hasTextCoordinates = true
             }

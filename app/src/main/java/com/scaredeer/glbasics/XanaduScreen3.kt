@@ -7,26 +7,23 @@ import android.util.Log
 import com.scaredeer.glbasics.Xanadu.Companion.SCALE_FACTOR
 import com.scaredeer.glbasics.Xanadu.Companion.TEXTURE_HALF_SIZE
 import com.scaredeer.glbasics.framework.Screen
-import com.scaredeer.glbasics.framework.gl.FpsCounter
-import com.scaredeer.glbasics.framework.gl.Shader2
-import com.scaredeer.glbasics.framework.gl.Texture
-import com.scaredeer.glbasics.framework.gl.Vertices
+import com.scaredeer.glbasics.framework.gl.*
 
 /**
- * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/glbasics/BobTest.java
+ * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/glbasics/OptimizedBobTest.java
  */
-class XanaduScreen(context: Context) : Screen(context) {
+class XanaduScreen3(context: Context) : Screen(context) {
 
     companion object {
-        private val TAG = XanaduScreen::class.simpleName
+        private val TAG = XanaduScreen3::class.simpleName
 
         private const val VERTEX_COUNT: Int = 4 // 頂点の個数
         private const val INDEX_COUNT: Int = 6 // 頂点インデックスの個数
 
-        private const val XANADU_FIGHTERS: Int = 800 // 26fps
+        private const val XANADU_FIGHTERS: Int = 800 // 60fps
     }
 
-    private lateinit var shader: Shader2
+    private lateinit var shader: Shader3
     private lateinit var texture: Texture
 
     private val identityMatrix = FloatArray(16)
@@ -36,7 +33,7 @@ class XanaduScreen(context: Context) : Screen(context) {
     private val projectionMatrix = FloatArray(16)
     private val mvpMatrix = FloatArray(16)
 
-    private lateinit var vertices: Vertices
+    private lateinit var vertices: BindableVertices2
 
     private val indices = shortArrayOf(
         0, 1, 2, // 左上 → 左下 → 右上
@@ -70,10 +67,13 @@ class XanaduScreen(context: Context) : Screen(context) {
     override fun resume() {
         Log.v(TAG, "resume")
 
-        shader = Shader2(Shader2.Mode.TEXTURE)
+        shader = Shader3(Shader3.Mode.TEXTURE)
         shader.use() // シェーダーの選択・有効化
 
-        vertices = Vertices(shader, VERTEX_COUNT, INDEX_COUNT)
+        // さっさと、作成済の scaleRotate 行列をシェーダーに適用する
+        shader.setScaleRotateMatrix(scaleRotateMatrix)
+
+        vertices = BindableVertices2(shader, VERTEX_COUNT, INDEX_COUNT)
         vertices.setVertices(floatArrayOf(
             // x, y, s, t
             -TEXTURE_HALF_SIZE, TEXTURE_HALF_SIZE, 0f, 0f,  // 左上
@@ -114,6 +114,8 @@ class XanaduScreen(context: Context) : Screen(context) {
             0f, height.toFloat(),
             1f, -1f
         )
+        // 早速、作成した Projection 行列をシェーダーに適用する
+        shader.setVpMatrix(projectionMatrix)
 
         // width/height に基き、画面内のあちこちにキャラクターをランダムに配置する
         xanadues.forEach {
@@ -140,6 +142,8 @@ class XanaduScreen(context: Context) : Screen(context) {
     override fun present() {
         glClear(GL_COLOR_BUFFER_BIT)
 
+        // ループに入る前にバインドし、
+        vertices.bind()
         xanadues.forEach {
             // 行列の積の式として × translate 的な計算（右側に掛ける）
             Matrix.translateM(
@@ -147,22 +151,13 @@ class XanaduScreen(context: Context) : Screen(context) {
                 identityMatrix, 0,
                 it.x, it.y, 0f
             )
-            // これで Model 行列は translate * rotate * scale の順番の行列の積を表す行列となる
-            Matrix.multiplyMM(
-                modelMatrix, 0,
-                translateMatrix, 0, scaleRotateMatrix, 0
-            )
-
-            // 行列の積の式として Projection (* View) * Model の順番で並ぶようにするのがポイント
-            Matrix.multiplyMM(
-                mvpMatrix, 0,
-                projectionMatrix, 0, modelMatrix, 0
-            )
-            // 作成した MVP 行列をシェーダーに適用する
-            shader.setMvpMatrix(mvpMatrix)
+            // 作成した translate 行列をシェーダーに適用する
+            shader.setTranslateMatrix(translateMatrix)
 
             vertices.draw(GL_TRIANGLES, 0, INDEX_COUNT)
         }
+        // ループを抜けたのでバインド解除。
+        vertices.unbind()
 
         fpsCounter.logFrame()
     }

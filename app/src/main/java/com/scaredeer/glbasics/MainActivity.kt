@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         binding = MainActivityBinding.inflate(layoutInflater)
 
         // ここで開始画面となる Screen を指定する
-        Game.screen = XanaduScreenOptimized(this)
+        Game.screen = XanaduScreen3(this)
 
         binding.glSurfaceView.setEGLContextClientVersion(2) // setRenderer よりも先に指定する必要がある
         renderer = Renderer()

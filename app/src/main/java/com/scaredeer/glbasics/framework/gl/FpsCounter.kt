@@ -11,7 +11,7 @@ class FpsCounter {
         private val TAG = FpsCounter::class.simpleName
     }
 
-        var startTime = System.nanoTime()
+    var startTime = System.nanoTime()
     var frames = 0
 
     fun logFrame() {

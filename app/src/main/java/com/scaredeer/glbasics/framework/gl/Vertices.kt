@@ -6,7 +6,10 @@ import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.nio.ShortBuffer
 
-class Vertices(private val shader: Shader2, verticesCount: Int, indicesCount: Int) {
+/**
+ * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/framework/gl/Vertices.java
+ */
+class Vertices(private val shader: Shader2, vertexCount: Int, indexCount: Int) {
 
     companion object {
         private val TAG = Vertices::class.simpleName
@@ -43,15 +46,15 @@ class Vertices(private val shader: Shader2, verticesCount: Int, indicesCount: In
         }
 
         perVertexSize = (POSITION_COMPONENTS
-        + (if (hasColor) COLOR_COMPONENTS else 0)
-        + (if (hasTextCoordinates) TEXTURE_COORDINATE_COMPONENTS else 0)
-        ) * BYTES_PER_FLOAT
+                + (if (hasColor) COLOR_COMPONENTS else 0)
+                + (if (hasTextCoordinates) TEXTURE_COORDINATE_COMPONENTS else 0)
+                ) * BYTES_PER_FLOAT
 
-        var buffer = ByteBuffer.allocateDirect(perVertexSize * verticesCount)
+        var buffer = ByteBuffer.allocateDirect(perVertexSize * vertexCount)
         buffer.order(ByteOrder.nativeOrder())
         vertices = buffer.asFloatBuffer()
 
-        buffer = ByteBuffer.allocateDirect(BYTES_PER_SHORT * indicesCount)
+        buffer = ByteBuffer.allocateDirect(BYTES_PER_SHORT * indexCount)
         buffer.order(ByteOrder.nativeOrder())
         indices = buffer.asShortBuffer()
     }
@@ -126,7 +129,7 @@ class Vertices(private val shader: Shader2, verticesCount: Int, indicesCount: In
     private fun bindTextureDataToShaderVariable(isColoring: Boolean) {
         // 頂点のテクスチャー位置情報を格納する FloatBuffer のポインターを適切な場所に移動し
         vertices.position(POSITION_COMPONENTS
-                    + (if (isColoring) COLOR_COMPONENTS else 0))
+                + (if (isColoring) COLOR_COMPONENTS else 0))
         // 頂点のテクスチャー位置情報の格納場所と書式を指定
         glVertexAttribPointer(
             shader.aTextureCoordinates,
