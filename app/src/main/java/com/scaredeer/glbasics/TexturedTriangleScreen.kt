@@ -168,6 +168,10 @@ class TexturedTriangleScreen(context: Context) : Screen(context) {
             val bitmap = loadBitmap(context, R.drawable.denzi_xanadu)
             textureName = generateTexture(bitmap!!)
             bitmap.recycle()
+
+            // 描画対象テクスチャーをバインドする
+            // （このプログラムではテクスチャーはこれしか使わないので、初期化時の一度きりの処理で問題ない）
+            glBindTexture(GL_TEXTURE_2D, textureName)
         }
 
         // 消去（背景）色の指定
@@ -205,6 +209,12 @@ class TexturedTriangleScreen(context: Context) : Screen(context) {
 
     override fun dispose() {
         Log.v(TAG, "dispose")
+
+        // 削除命令をするにさしあたって、操作対象なしの状態にしておく必要がある
+        glBindTexture(GL_TEXTURE_2D, 0)
+        // テクスチャーを削除する
+        val storedTextureNames = intArrayOf(textureName)
+        glDeleteTextures(1, storedTextureNames, 0)
     }
 
     override fun update(deltaNanoTime: Long) {
@@ -227,9 +237,6 @@ class TexturedTriangleScreen(context: Context) : Screen(context) {
         // 頂点の位置情報をシェーダー変数 aPosition に対応付ける
         glEnableVertexAttribArray(aPosition)
 
-        // 描画対象テクスチャーをバインドする
-        glBindTexture(GL_TEXTURE_2D, textureName)
-
         // 頂点のテクスチャー位置情報を格納する FloatBuffer のポインターを適切な場所に移動し
         vertices.position(POSITION_COMPONENTS)
         // 頂点情報の格納場所と書式を指定
@@ -246,8 +253,5 @@ class TexturedTriangleScreen(context: Context) : Screen(context) {
 
         // 各頂点を描画
         glDrawArrays(GL_TRIANGLES, 0, VERTICES_COUNT)
-
-        // 描画対象テクスチャーをバインド解除する
-        glBindTexture(GL_TEXTURE_2D, 0)
     }
 }
