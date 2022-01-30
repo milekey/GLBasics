@@ -160,7 +160,6 @@ class IndexedScreen(context: Context) : Screen(context) {
         // 頂点のテクスチャー位置情報をシェーダー変数 aTextureCoordinates に対応付ける
         glEnableVertexAttribArray(shader.aTextureCoordinates)
 
-        // 各頂点を描画モードは TRIANGLES + INDICES の代りに、TRIANGLE_STRIP を使うことにする
         glDrawElements(GL_TRIANGLE_STRIP, INDICES_COUNT, GL_UNSIGNED_SHORT, indices)
     }
 }
