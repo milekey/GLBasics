@@ -78,6 +78,7 @@ class Texture(bitmap: Bitmap) {
         fun deleteTexture(name: Int) {
             // 削除命令をするにさしあたって、操作対象なしの状態にしておく必要がある
             glBindTexture(GL_TEXTURE_2D, 0)
+            // テクスチャーを削除する
             val storedTextureNames = intArrayOf(name)
             glDeleteTextures(1, storedTextureNames, 0)
         }
