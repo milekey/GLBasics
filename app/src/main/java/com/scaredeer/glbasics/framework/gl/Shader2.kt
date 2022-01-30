@@ -252,7 +252,7 @@ class Shader2(val mode: Mode) {
      *
      * @param mvpMatrix Model-View-Projection Matrix
      */
-    fun setProjectionMatrix(mvpMatrix: FloatArray) {
+    fun setMvpMatrix(mvpMatrix: FloatArray) {
         // Pass the matrix into the shader program.
         glUniformMatrix4fv(uMvpMatrix, 1, false, mvpMatrix, 0)
     }
