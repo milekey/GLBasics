@@ -3,6 +3,9 @@ package com.scaredeer.glbasics.framework.gl
 import android.opengl.GLES20.*
 import android.util.Log
 
+/**
+ * Shader クラスを発展させてさらに、3 種類のシェーダーを使い分けられるようにした。
+ */
 class Shader2(val mode: Mode) {
 
     companion object {
@@ -252,4 +255,5 @@ class Shader2(val mode: Mode) {
     fun setProjectionMatrix(mvpMatrix: FloatArray) {
         // Pass the matrix into the shader program.
         glUniformMatrix4fv(uMvpMatrix, 1, false, mvpMatrix, 0)
-    }}
+    }
+}
