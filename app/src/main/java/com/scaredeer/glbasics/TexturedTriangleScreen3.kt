@@ -86,7 +86,7 @@ class TexturedTriangleScreen3(context: Context) : Screen(context) {
             1f, -1f
         )
         // 早速、作成した Projection 行列をシェーダーに適用する
-        shader.setProjectionMatrix(projectionMatrix)
+        shader.setMvpMatrix(projectionMatrix)
 
         // width/height に基いて、画面下端を底辺とする二等辺三角形の 3 頂点を決定する
         vertices.clear()

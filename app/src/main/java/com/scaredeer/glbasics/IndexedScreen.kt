@@ -101,7 +101,7 @@ class IndexedScreen(context: Context) : Screen(context) {
             1f, -1f
         )
         // 早速、作成した Projection 行列をシェーダーに適用する
-        shader.setProjectionMatrix(projectionMatrix)
+        shader.setMvpMatrix(projectionMatrix)
 
         // 確定した width/height を使って、画面中心から正方形の半分のサイズを上下左右に配置した頂点座標を
         // 使うことで、 画面中心にセンタリングした正方形を構成する。
