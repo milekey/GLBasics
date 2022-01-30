@@ -13,7 +13,7 @@ import java.nio.FloatBuffer
 import java.nio.ShortBuffer
 
 /**
- * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/glbasics/BlendingTest.java
+ * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/glbasics/IndexedTest.java
  */
 class IndexedScreen(context: Context) : Screen(context) {
 
