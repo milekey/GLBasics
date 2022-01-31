@@ -16,8 +16,8 @@ object Game {
     }
 
     fun changeScreen(screen: Screen) {
-        Game.screen.pause()
-        Game.screen.dispose()
+        this.screen.pause()
+        this.screen.dispose()
 
         screen.resume()
         screen.resize(width, height)
