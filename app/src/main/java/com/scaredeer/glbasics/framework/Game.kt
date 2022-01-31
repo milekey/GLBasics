@@ -22,6 +22,6 @@ object Game {
         screen.resume()
         screen.resize(width, height)
         screen.update(0L)
-        Game.screen = screen
+        this.screen = screen
     }
 }
