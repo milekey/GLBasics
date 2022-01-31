@@ -206,7 +206,7 @@ class Shader2(val mode: Mode) {
     val aPosition: Int
     val aColor: Int
     val aTextureCoordinates: Int
-    val uTextureUnit: Int
+    private val uTextureUnit: Int
 
     init {
         // Compile the shaders.

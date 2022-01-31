@@ -11,7 +11,6 @@ class Shader3(val mode: Mode) {
     companion object {
         private val TAG = Shader3::class.simpleName
 
-        private const val U_MVP_MATRIX = "u_MvpMatrix"
         private const val U_VP_MATRIX = "u_VpMatrix"
         private const val U_TRANSLATE_MATRIX = "u_TranslateMatrix"
         private const val U_SCALE_ROTATE_MATRIX = "u_ScaleRotateMatrix"
@@ -23,12 +22,12 @@ class Shader3(val mode: Mode) {
         private const val U_TEXTURE_UNIT = "u_TextureUnit"
 
         private const val COLORED_VERTEX_SHADER = """
-            uniform mat4 $U_MVP_MATRIX;
+            uniform mat4 $U_VP_MATRIX;
             attribute vec4 $A_POSITION;
             attribute vec4 $A_COLOR;
             varying vec4 $V_COLOR;
             void main() {
-                gl_Position = $U_MVP_MATRIX * $A_POSITION;
+                gl_Position = $U_VP_MATRIX * $U_TRANSLATE_MATRIX * $U_SCALE_ROTATE_MATRIX * $A_POSITION;
                 $V_COLOR = $A_COLOR;
             }
         """
@@ -62,14 +61,14 @@ class Shader3(val mode: Mode) {
         """
 
         private const val COLORED_TEXTURE_VERTEX_SHADER = """
-            uniform mat4 $U_MVP_MATRIX;
+            uniform mat4 $U_VP_MATRIX;
             attribute vec4 $A_POSITION;
             attribute vec4 $A_COLOR;
             varying vec4 $V_COLOR;
             attribute vec2 $A_TEXTURE_COORDINATES;
             varying vec2 $V_TEXTURE_COORDINATES;
             void main() {
-                gl_Position = $U_MVP_MATRIX * $A_POSITION;
+                gl_Position = $U_VP_MATRIX * $U_TRANSLATE_MATRIX * $U_SCALE_ROTATE_MATRIX * $A_POSITION;
                 $V_COLOR = $A_COLOR;
                 $V_TEXTURE_COORDINATES = $A_TEXTURE_COORDINATES;
             }
@@ -207,14 +206,13 @@ class Shader3(val mode: Mode) {
 
     private val program: Int
 
-    private val uMvpMatrix: Int
     private val uVpMatrix: Int
     private val uTranslateMatrix: Int
     private val uScaleRotateMatrix: Int
     val aPosition: Int
     val aColor: Int
     val aTextureCoordinates: Int
-    val uTextureUnit: Int
+    private val uTextureUnit: Int
 
     init {
         // Compile the shaders.
@@ -238,7 +236,6 @@ class Shader3(val mode: Mode) {
         validateProgram(program)
 
         // 各シェーダー変数への入力のポインターとなる id を得る
-        uMvpMatrix = glGetUniformLocation(program, U_MVP_MATRIX)
         uVpMatrix = glGetUniformLocation(program, U_VP_MATRIX)
         uTranslateMatrix = glGetUniformLocation(program, U_TRANSLATE_MATRIX)
         uScaleRotateMatrix = glGetUniformLocation(program, U_SCALE_ROTATE_MATRIX)
@@ -257,25 +254,30 @@ class Shader3(val mode: Mode) {
     }
 
     /**
-     * バーテックスシェーダーで定義している uMvpMatrix をセットし直すためのメソッド。
+     * バーテックスシェーダーで定義している uVpMatrix をセットし直すためのメソッド。
      *
-     * @param mvpMatrix Model-View-Projection Matrix
+     * @param vpMatrix View-Projection Matrix
      */
-    fun setMvpMatrix(mvpMatrix: FloatArray) {
-        // Pass the matrix into the shader program.
-        glUniformMatrix4fv(uMvpMatrix, 1, false, mvpMatrix, 0)
-    }
-
     fun setVpMatrix(vpMatrix: FloatArray) {
         // Pass the matrix into the shader program.
         glUniformMatrix4fv(uVpMatrix, 1, false, vpMatrix, 0)
     }
 
+    /**
+     * バーテックスシェーダーで定義している uTranslateMatrix をセットし直すためのメソッド。
+     *
+     * @param translateMatrix Translate Matrix
+     */
     fun setTranslateMatrix(translateMatrix: FloatArray) {
         // Pass the matrix into the shader program.
         glUniformMatrix4fv(uTranslateMatrix, 1, false, translateMatrix, 0)
     }
 
+    /**
+     * バーテックスシェーダーで定義している uScaleRotateMatrix をセットし直すためのメソッド。
+     *
+     * @param scaleRotateMatrix Scale-Rotate Matrix
+     */
     fun setScaleRotateMatrix(scaleRotateMatrix: FloatArray) {
         // Pass the matrix into the shader program.
         glUniformMatrix4fv(uScaleRotateMatrix, 1, false, scaleRotateMatrix, 0)
