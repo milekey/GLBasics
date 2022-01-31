@@ -43,60 +43,70 @@ class MainActivity : AppCompatActivity() {
                     binding.glSurfaceView.queueEvent {
                         Game.changeScreen(FirstTriangleScreen(this))
                     }
+                    binding.toolbar.setTitle(R.string.firstTriangle)
                     true
                 }
                 R.id.coloredTriangle -> {
                     binding.glSurfaceView.queueEvent {
                         Game.changeScreen(ColoredTriangleScreen(this))
                     }
+                    binding.toolbar.setTitle(R.string.coloredTriangle)
                     true
                 }
                 R.id.texturedTriangle1 -> {
                     binding.glSurfaceView.queueEvent {
                         Game.changeScreen(TexturedTriangleScreen(this))
                     }
+                    binding.toolbar.setTitle(R.string.texturedTriangle1)
                     true
                 }
                 R.id.texturedTriangle2 -> {
                     binding.glSurfaceView.queueEvent {
                         Game.changeScreen(TexturedTriangleScreen2(this))
                     }
+                    binding.toolbar.setTitle(R.string.texturedTriangle2)
                     true
                 }
                 R.id.texturedTriangle3 -> {
                     binding.glSurfaceView.queueEvent {
                         Game.changeScreen(TexturedTriangleScreen3(this))
                     }
+                    binding.toolbar.setTitle(R.string.texturedTriangle3)
                     true
                 }
                 R.id.indexed -> {
                     binding.glSurfaceView.queueEvent {
                         Game.changeScreen(IndexedScreen(this))
                     }
+                    binding.toolbar.setTitle(R.string.indexed)
                     true
                 }
                 R.id.blending -> {
                     binding.glSurfaceView.queueEvent {
                         Game.changeScreen(BlendingScreen(this))
                     }
+                    binding.toolbar.setTitle(R.string.blending)
                     true
                 }
                 R.id.xanadu1 -> {
                     binding.glSurfaceView.queueEvent {
                         Game.changeScreen(XanaduScreen(this))
                     }
+                    binding.toolbar.setTitle(R.string.xanadu1)
                     true
                 }
                 R.id.xanadu2 -> {
                     binding.glSurfaceView.queueEvent {
                         Game.changeScreen(XanaduScreen2(this))
                     }
+                    binding.toolbar.setTitle(R.string.xanadu2)
                     true
                 }
                 R.id.xanadu3 -> {
                     binding.glSurfaceView.queueEvent {
                         Game.changeScreen(XanaduScreen3(this))
                     }
+                    binding.toolbar.setTitle(R.string.xanadu3)
                     true
                 }
                 else -> {

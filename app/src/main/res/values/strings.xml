@@ -3,12 +3,12 @@
 
     <string name="firstTriangle">First Triangle</string>
     <string name="coloredTriangle">Colored Triangle</string>
-    <string name="texturedTriangle1" tools:ignore="TypographyFractions">Textured Triangle 1/3</string>
-    <string name="texturedTriangle2">Textured Triangle 2/3</string>
-    <string name="texturedTriangle3">Textured Triangle 3/3</string>
+    <string name="texturedTriangle1" tools:ignore="TypographyFractions">Textured △</string>
+    <string name="texturedTriangle2">Textured △ + Texture</string>
+    <string name="texturedTriangle3">Textured △ + Shader</string>
     <string name="indexed">Indexed</string>
     <string name="blending">Blending</string>
-    <string name="xanadu1" tools:ignore="TypographyFractions">Xanadu 1/3</string>
-    <string name="xanadu2">Xanadu 2/3</string>
-    <string name="xanadu3">Xanadu 3/3</string>
+    <string name="xanadu1">Xanadu</string>
+    <string name="xanadu2" tools:ignore="TypographyFractions">Xanadu + BindableVertex</string>
+    <string name="xanadu3">Xanadu + Shader2</string>
 </resources>
