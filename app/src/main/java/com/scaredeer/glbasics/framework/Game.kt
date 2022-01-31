@@ -5,8 +5,15 @@ package com.scaredeer.glbasics.framework
  */
 object Game {
     lateinit var screen: Screen
-    var width = 0
-    var height = 0
+
+    private var width = 0
+    private var height = 0
+
+    fun onSurfaceChanged(width: Int, height: Int) {
+        this.width = width
+        this.height = height
+        screen.resize(width, height)
+    }
 
     fun changeScreen(screen: Screen) {
         Game.screen.pause()
