@@ -27,8 +27,6 @@ class Shader3(val mode: Mode) {
             attribute vec4 $A_POSITION;
             attribute vec4 $A_COLOR;
             varying vec4 $V_COLOR;
-            attribute vec2 $A_TEXTURE_COORDINATES;
-            varying vec2 $V_TEXTURE_COORDINATES;
             void main() {
                 gl_Position = $U_MVP_MATRIX * $A_POSITION;
                 $V_COLOR = $A_COLOR;
