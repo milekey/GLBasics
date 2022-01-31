@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/firstTriangle"
+        android:title="@string/firstTriangle"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/coloredTriangle"
+        android:title="@string/coloredTriangle"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/texturedTriangle1"
+        android:title="@string/texturedTriangle1"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/texturedTriangle2"
+        android:title="@string/texturedTriangle2"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/texturedTriangle3"
+        android:title="@string/texturedTriangle3"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/indexed"
+        android:title="@string/indexed"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/blending"
+        android:title="@string/blending"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/xanadu1"
+        android:title="@string/xanadu1"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/xanadu2"
+        android:title="@string/xanadu2"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/xanadu3"
+        android:title="@string/xanadu3"
+        app:showAsAction="never" />
+</menu>

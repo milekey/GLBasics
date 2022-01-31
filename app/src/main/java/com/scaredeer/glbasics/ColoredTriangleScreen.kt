@@ -94,6 +94,9 @@ class ColoredTriangleScreen(context: Context) : Screen(context) {
         uMvpMatrix = glGetUniformLocation(shaderProgram, U_MVP_MATRIX)
         aPosition = glGetAttribLocation(shaderProgram, A_POSITION)
         aColor = glGetAttribLocation(shaderProgram, A_COLOR)
+
+        // 消去（背景）色の指定
+        glClearColor(0f, 0f, 0f, 0f)
     }
 
     override fun resize(width: Int, height: Int) {

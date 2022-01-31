@@ -59,6 +59,8 @@ class Renderer: GLSurfaceView.Renderer {
 
         glViewport(0, 0, width, height)
 
+        Game.width = width
+        Game.height = height
         Game.screen.resize(width, height)
     }
 

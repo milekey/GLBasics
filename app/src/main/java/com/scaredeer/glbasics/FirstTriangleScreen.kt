@@ -92,6 +92,9 @@ class FirstTriangleScreen(context: Context) : Screen(context) {
 
         // 早速、RGBA をシェーダー変数（u_Color）に適用する
         glUniform4fv(uColor, 1, floatArrayOf(1f, 0f, 0f, 1f), 0)
+
+        // 消去（背景）色の指定
+        glClearColor(0f, 0f, 0f, 0f)
     }
 
     override fun resize(width: Int, height: Int) {

@@ -3,6 +3,7 @@ package com.scaredeer.glbasics
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.scaredeer.glbasics.databinding.MainActivityBinding
 import com.scaredeer.glbasics.framework.Game
 import com.scaredeer.glbasics.framework.Renderer
@@ -30,11 +31,79 @@ class MainActivity : AppCompatActivity() {
         binding = MainActivityBinding.inflate(layoutInflater)
 
         // ここで開始画面となる Screen を指定する
-        Game.screen = XanaduScreen3(this)
+        Game.screen = FirstTriangleScreen(this)
 
         binding.glSurfaceView.setEGLContextClientVersion(2) // setRenderer よりも先に指定する必要がある
         renderer = Renderer()
         binding.glSurfaceView.setRenderer(renderer)
+
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.firstTriangle -> {
+                    binding.glSurfaceView.queueEvent {
+                        Game.changeScreen(FirstTriangleScreen(this))
+                    }
+                    true
+                }
+                R.id.coloredTriangle -> {
+                    binding.glSurfaceView.queueEvent {
+                        Game.changeScreen(ColoredTriangleScreen(this))
+                    }
+                    true
+                }
+                R.id.texturedTriangle1 -> {
+                    binding.glSurfaceView.queueEvent {
+                        Game.changeScreen(TexturedTriangleScreen(this))
+                    }
+                    true
+                }
+                R.id.texturedTriangle2 -> {
+                    binding.glSurfaceView.queueEvent {
+                        Game.changeScreen(TexturedTriangleScreen2(this))
+                    }
+                    true
+                }
+                R.id.texturedTriangle3 -> {
+                    binding.glSurfaceView.queueEvent {
+                        Game.changeScreen(TexturedTriangleScreen3(this))
+                    }
+                    true
+                }
+                R.id.indexed -> {
+                    binding.glSurfaceView.queueEvent {
+                        Game.changeScreen(IndexedScreen(this))
+                    }
+                    true
+                }
+                R.id.blending -> {
+                    binding.glSurfaceView.queueEvent {
+                        Game.changeScreen(BlendingScreen(this))
+                    }
+                    true
+                }
+                R.id.xanadu1 -> {
+                    binding.glSurfaceView.queueEvent {
+                        Game.changeScreen(XanaduScreen(this))
+                    }
+                    true
+                }
+                R.id.xanadu2 -> {
+                    binding.glSurfaceView.queueEvent {
+                        Game.changeScreen(XanaduScreen2(this))
+                    }
+                    true
+                }
+                R.id.xanadu3 -> {
+                    binding.glSurfaceView.queueEvent {
+                        Game.changeScreen(XanaduScreen3(this))
+                    }
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
 
         setContentView(binding.root)
     }
