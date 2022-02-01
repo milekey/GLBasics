@@ -29,9 +29,7 @@ class XanaduScreen3(context: Context) : Screen(context) {
     private val identityMatrix = FloatArray(16)
     private val scaleRotateMatrix = FloatArray(16)
     private val translateMatrix = FloatArray(16)
-    private val modelMatrix = FloatArray(16)
     private val projectionMatrix = FloatArray(16)
-    private val mvpMatrix = FloatArray(16)
 
     private lateinit var vertices: BindableVertices2
 
