@@ -51,14 +51,6 @@ class TexturedTriangleScreen3(context: Context) : Screen(context) {
         shader = Shader()
         shader.use()
 
-        // 以下 2 行（コメント除く）、 バーテックスシェーダーからフラグメントシェーダーへの橋渡しに使われる
-        // u_TextureUnit のための設定（ただし、現状ではデフォルトと一緒なので、省略しても動く）
-        // Set the active texture unit to texture unit 0.
-        glActiveTexture(GL_TEXTURE0)
-        // Tell the texture uniform sampler to use this texture in the shader by
-        // telling it to read from texture unit 0.
-        glUniform1i(shader.uTextureUnit, 0)
-
         val context = weakContext.get()
         if (context != null) {
             val bitmap = loadBitmap(context, R.drawable.denzi_xanadu)

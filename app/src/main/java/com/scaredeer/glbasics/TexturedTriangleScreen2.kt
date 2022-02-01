@@ -62,7 +62,6 @@ class TexturedTriangleScreen2(context: Context) : Screen(context) {
     private var uMvpMatrix = 0
     private var aPosition = 0
     private var aTextureCoordinates = 0
-    private var uTextureUnit = 0
 
     private lateinit var texture: Texture
 
@@ -102,15 +101,6 @@ class TexturedTriangleScreen2(context: Context) : Screen(context) {
         uMvpMatrix = glGetUniformLocation(shaderProgram, U_MVP_MATRIX)
         aPosition = glGetAttribLocation(shaderProgram, A_POSITION)
         aTextureCoordinates = glGetAttribLocation(shaderProgram, A_TEXTURE_COORDINATES)
-        uTextureUnit = glGetUniformLocation(shaderProgram, U_TEXTURE_UNIT)
-
-        // 以下 2 行（コメント除く）、 バーテックスシェーダーからフラグメントシェーダーへの橋渡しに使われる
-        // u_TextureUnit のための設定（ただし、現状ではデフォルトと一緒なので、省略しても動く）
-        // Set the active texture unit to texture unit 0.
-        glActiveTexture(GL_TEXTURE0)
-        // Tell the texture uniform sampler to use this texture in the shader by
-        // telling it to read from texture unit 0.
-        glUniform1i(uTextureUnit, 0)
 
         val context = weakContext.get()
         if (context != null) {

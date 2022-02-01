@@ -155,7 +155,6 @@ class Shader {
     private val uMvpMatrix: Int
     val aPosition: Int
     val aTextureCoordinates: Int
-    val uTextureUnit: Int
 
     init {
         // Compile the shaders.
@@ -170,7 +169,6 @@ class Shader {
         uMvpMatrix = glGetUniformLocation(program, U_MVP_MATRIX)
         aPosition = glGetAttribLocation(program, A_POSITION)
         aTextureCoordinates = glGetAttribLocation(program, A_TEXTURE_COORDINATES)
-        uTextureUnit = glGetUniformLocation(program, U_TEXTURE_UNIT)
     }
 
     /**

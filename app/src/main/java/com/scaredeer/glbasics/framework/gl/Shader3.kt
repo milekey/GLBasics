@@ -212,7 +212,6 @@ class Shader3(val mode: Mode) {
     val aPosition: Int
     val aColor: Int
     val aTextureCoordinates: Int
-    private val uTextureUnit: Int
 
     init {
         // Compile the shaders.
@@ -242,7 +241,6 @@ class Shader3(val mode: Mode) {
         aPosition = glGetAttribLocation(program, A_POSITION)
         aColor = glGetAttribLocation(program, A_COLOR)
         aTextureCoordinates = glGetAttribLocation(program, A_TEXTURE_COORDINATES)
-        uTextureUnit = glGetUniformLocation(program, U_TEXTURE_UNIT)
     }
 
     /**
