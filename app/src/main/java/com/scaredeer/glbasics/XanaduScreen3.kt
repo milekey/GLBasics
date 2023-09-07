@@ -9,14 +9,14 @@ import com.scaredeer.glbasics.Xanadu.Companion.TEXTURE_HALF_SIZE
 import com.scaredeer.glbasics.framework.Screen
 import com.scaredeer.glbasics.framework.gl.*
 
+private val TAG = XanaduScreen3::class.simpleName
+
 /**
  * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/glbasics/OptimizedBobTest.java
  */
 class XanaduScreen3(context: Context) : Screen(context) {
 
     companion object {
-        private val TAG = XanaduScreen3::class.simpleName
-
         private const val VERTEX_COUNT: Int = 4 // 頂点の個数
         private const val INDEX_COUNT: Int = 6 // 頂点インデックスの個数
 

@@ -12,14 +12,14 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 
+private val TAG = TexturedTriangleScreen::class.simpleName
+
 /**
  * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/glbasics/TexturedTriangleTest.java
  */
 class TexturedTriangleScreen(context: Context) : Screen(context) {
 
     companion object {
-        private val TAG = TexturedTriangleScreen::class.simpleName
-
         private const val POSITION_COMPONENTS: Int = 2 // x, y（※ z は常に 0 なので省略）
         private const val TEXTURE_COORDINATE_COMPONENTS: Int = 2 // s, t
         private const val BYTES_PER_FLOAT = 4 // Java float is 32-bit = 4-byte

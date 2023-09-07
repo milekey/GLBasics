@@ -3,14 +3,14 @@ package com.scaredeer.glbasics.framework.gl
 import android.opengl.GLES20.*
 import android.util.Log
 
+private val TAG = Shader2::class.simpleName
+
 /**
  * Shader クラスを発展させてさらに、3 種類のシェーダーを使い分けられるようにした。
  */
 class Shader2(val mode: Mode) {
 
     companion object {
-        private val TAG = Shader2::class.simpleName
-
         private const val U_MVP_MATRIX = "u_MvpMatrix"
         private const val A_POSITION = "a_Position"
         private const val A_COLOR = "a_Color"

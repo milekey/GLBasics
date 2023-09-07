@@ -3,10 +3,11 @@ package com.scaredeer.glbasics
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.scaredeer.glbasics.databinding.MainActivityBinding
 import com.scaredeer.glbasics.framework.Game
 import com.scaredeer.glbasics.framework.Renderer
+
+private val TAG = MainActivity::class.simpleName
 
 /**
  * cf. https://github.com/Apress/beg-android-games-2ed/tree/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames
@@ -15,10 +16,6 @@ import com.scaredeer.glbasics.framework.Renderer
  * Screen をカスタムして、ファミコンのカセットのように入れ換えて使うイメージ。
  */
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        private val TAG = MainActivity::class.simpleName
-    }
 
     private lateinit var binding: MainActivityBinding
     private lateinit var renderer: Renderer

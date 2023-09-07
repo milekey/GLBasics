@@ -3,14 +3,14 @@ package com.scaredeer.glbasics.framework.gl
 import android.opengl.GLES20.*
 import android.util.Log
 
+private val TAG = Shader3::class.simpleName
+
 /**
  * Shader クラスを発展させてさらに、3 種類のシェーダーを使い分けられるようにした。
  */
 class Shader3(val mode: Mode) {
 
     companion object {
-        private val TAG = Shader3::class.simpleName
-
         private const val U_VP_MATRIX = "u_VpMatrix"
         private const val U_TRANSLATE_MATRIX = "u_TranslateMatrix"
         private const val U_SCALE_ROTATE_MATRIX = "u_ScaleRotateMatrix"

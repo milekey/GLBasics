@@ -2,14 +2,14 @@ package com.scaredeer.glbasics
 
 import java.util.*
 
+private val TAG = Xanadu::class.simpleName
+
 /**
  * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/glbasics/Bob.java
  */
 class Xanadu {
 
     companion object {
-        private val TAG = Xanadu::class.simpleName
-
         // 1 [nano sec] あたりのスピード（縦横 1 ピクセル単位）
         // ちなみに、60fps の場合、1 フレームは 1000000000 / 60 = 16666667 [nano sec]
         private const val SPEED: Float = 6.0E-8F // = 60 / 1000000000: 1 フレーム 1 縦横ピクセル

@@ -8,14 +8,12 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import kotlin.concurrent.withLock
 
+private val TAG = Renderer::class.simpleName
+
 /**
  * cf. https://github.com/Apress/beg-android-games-2ed/blob/master/beginning-android-games-2nd-edition/ch07-gl-basics/src/com/badlogic/androidgames/framework/impl/GLGame.java
  */
 class Renderer: GLSurfaceView.Renderer {
-
-    companion object {
-        private val TAG = Renderer::class.simpleName
-    }
 
     internal enum class GLGameState {
         INITIALIZED, RUNNING, PAUSED, FINISHED, IDLE
