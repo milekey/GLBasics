@@ -104,7 +104,7 @@ class Renderer: GLSurfaceView.Renderer {
                 try {
                     stateChangeCondition.await()
                     break
-                } catch (e: InterruptedException) {
+                } catch (_: InterruptedException) {
                 }
             }
         }
